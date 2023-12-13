@@ -1,0 +1,260 @@
+@use 'base';
+
+.MainContainer {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MainBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MainTop {
+    width: calc(100% - 40px);
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.CreateBtns {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+
+    button {
+        background-color: #404040;
+        color: white;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 10px 20px;
+        margin: 0;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(40, 40, 40, 0.2);
+        transition: opacity .1s linear, transform .1s linear;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &:active {
+            transform: scale(0.99);
+        }
+    }
+
+    button+button {
+        margin-top: 10px;
+    }
+}
+
+.MainSummary {
+    width: calc(48% - 40px);
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(40, 40, 40, 0.2);
+    padding: 10px 20px;
+    background-color: #404040;
+    color: white;
+}
+
+.SummarySub {
+    font-size: 20px;
+    font-weight: 500;
+    align-self: center;
+}
+
+.SummaryStep {
+    margin-top: 10px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.MainObjects {
+    width: calc(100% - 20px);
+    padding: 20px 10px 10px 10px;
+    border-top: solid 1px rgba(40, 40, 40, 0.1);
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ObjectsSub {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.ObjectsSearch {
+    width: calc(50% - 40px);
+    max-width: 500px;
+    margin: 10px 0 0 0;
+    border: solid 1px rgba(40, 40, 40, 0.3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #404040;
+    overflow: hidden;
+}
+
+.ObjectsIcon {
+    margin: 0 10px 0 10px;
+}
+
+.ObjectsInput {
+    margin: 0;
+    padding: 10px 20px 10px 0;
+    height: 100%;
+    width: 100%;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    color: #404040;
+    outline: none;
+    border: unset;
+}
+
+.ObjectsContainer {
+    width: calc(100% - 20px);
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: wrap;
+    margin-left: -2%;
+}
+
+.ObjectItem {
+    width: 20%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(40, 40, 40, 0.2);
+    display: flex;
+    flex-direction: column;
+    margin-left: 2%;
+    margin-top: 30px;
+}
+
+.ObjectName {
+    align-self: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.ObjectTotal {
+    margin-top: 20px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.ObjectView {
+    margin: 10px 0 0 0;
+    background-color: #404040;
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: opacity .1s linear, transform .1s linear;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+.CreateObjectModal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.CreateBox {
+    width: 500px;
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.CreateSub {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.CreateInput {
+    margin: 20px 0 0 0;
+    padding: 10px 20px;
+    width: calc(100% - 40px);
+    font-family: Montserrat, sans-serif;
+    font-size: 16px;
+    color: #404040;
+    outline: none;
+    border: solid 1px rgba(40, 40, 40, 0.3);
+    border-radius: 10px;
+}
+
+.CreateObjectBtns {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+        width: calc(50% - 5px);
+        margin: 0;
+        padding: 10px 20px;
+        background-color: #404040;
+        color: white;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        border-radius: 10px;
+        transition: opacity .1s linear, transform .1s linear;
+
+        &:hover {
+            opacity: 0.8;
+        }
+
+        &:active {
+            transform: scale(0.99);
+        }
+    }
+}
+
+.AddBtn {
+    background-color: forestgreen !important;
+}
