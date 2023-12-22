@@ -49,6 +49,10 @@
     }
 }
 
+.StepTable {
+    overflow-x: scroll;
+}
+
 .UpdateItem {
     cursor: pointer;
     transition: background-color .1s linear;

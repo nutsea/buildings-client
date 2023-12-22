@@ -482,3 +482,55 @@
 .FileClear.Showed {
     display: block;
 }
+
+@media (max-width: 1000px) {
+    .MainTop {
+        flex-direction: column;
+    }
+
+    .CreateBtns {
+        width: 100%;
+    }
+
+    .MainSubCenter {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .MainSummary {
+        width: calc(100% - 40px);
+    }
+
+    .ObjectsSearch {
+        width: 350px;
+        max-width: calc(100% - 40px);
+    }
+}
+
+@media (max-width: 970px) {
+    .ObjectsContainer {
+        width: calc(100% - 20px);
+    }
+
+    .ObjectItem {
+        width: 38%;
+    }
+
+    .ObjectsFigure {
+        width: 5%;
+        left: 47.5%;
+    }
+}
+@media (max-width: 530px) {
+    .ObjectsContainer {
+        flex-direction: column;
+    }
+
+    .ObjectItem {
+        width: calc(100% - 40px);
+    }
+
+    .ObjectsFigure {
+        display: none;
+    }
+}

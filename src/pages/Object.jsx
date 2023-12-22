@@ -388,51 +388,53 @@ const Object = () => {
                                             }
                                         </div>
                                         {isItemInArr(items, step.step_id) &&
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Наименование</th>
-                                                        <th>Сумма (нал)</th>
-                                                        <th>Сумма (безнал)</th>
-                                                        <th>Оплачено (нал)</th>
-                                                        <th>Оплачено (нал)</th>
-                                                        <th>Документы</th>
-                                                        <th>Редактировать</th>
-                                                        <th>Удалить</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {filteredItems(step.step_id).map((item, i) => {
-                                                        return (
-                                                            <tr key={i}>
-                                                                <td>{item.name}</td>
-                                                                <td>{formatNumber(item.total)} ₽</td>
-                                                                <td>{formatNumber(item.total_non_cash)} ₽</td>
-                                                                <td>{formatNumber(item.paid_cash)} ₽</td>
-                                                                <td>{formatNumber(item.paid_non_cash)} ₽</td>
-                                                                <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
-                                                                <td
-                                                                    className="UpdateItem"
-                                                                    onClick={() => {
-                                                                        chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
-                                                                        setIsCreating(false)
-                                                                    }}
-                                                                >
-                                                                    <GoPencil size={22} style={{ marginTop: 3 }} />
-                                                                </td>
-                                                                <td
-                                                                    className="DeleteItem"
-                                                                    onClick={() => {
-                                                                        chooseToDelete(item.item_id, item.name)
-                                                                    }}
-                                                                >
-                                                                    <GoTrash size={22} style={{ marginTop: 3 }} />
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })}
-                                                </tbody>
-                                            </table>
+                                            <div className="StepTable">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Наименование</th>
+                                                            <th>Сумма (нал)</th>
+                                                            <th>Сумма (безнал)</th>
+                                                            <th>Оплачено (нал)</th>
+                                                            <th>Оплачено (нал)</th>
+                                                            <th>Документы</th>
+                                                            <th>Редактировать</th>
+                                                            <th>Удалить</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {filteredItems(step.step_id).map((item, i) => {
+                                                            return (
+                                                                <tr key={i}>
+                                                                    <td>{item.name}</td>
+                                                                    <td>{formatNumber(item.total)} ₽</td>
+                                                                    <td>{formatNumber(item.total_non_cash)} ₽</td>
+                                                                    <td>{formatNumber(item.paid_cash)} ₽</td>
+                                                                    <td>{formatNumber(item.paid_non_cash)} ₽</td>
+                                                                    <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
+                                                                    <td
+                                                                        className="UpdateItem"
+                                                                        onClick={() => {
+                                                                            chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
+                                                                            setIsCreating(false)
+                                                                        }}
+                                                                    >
+                                                                        <GoPencil size={22} style={{ marginTop: 3 }} />
+                                                                    </td>
+                                                                    <td
+                                                                        className="DeleteItem"
+                                                                        onClick={() => {
+                                                                            chooseToDelete(item.item_id, item.name)
+                                                                        }}
+                                                                    >
+                                                                        <GoTrash size={22} style={{ marginTop: 3 }} />
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         }
                                         <button
                                             className="AddItem"
