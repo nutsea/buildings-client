@@ -375,7 +375,7 @@ const Main = () => {
                     />
                     <div className="CreateObjectBtns modal">
                         <button className="close" onClick={closeModal}>ОТМЕНА</button>
-                        <button className={`AddBtn modal ${name.length > 0 ? '' : 'NonActive'}`} onClick={addObject}>ДОБАВИТЬ</button>
+                        <button className={`AddBtn modal ${name.length > 0 && floor.length > 0 ? '' : 'NonActive'}`} onClick={addObject}>ДОБАВИТЬ</button>
                     </div>
                 </div>
             </div>
