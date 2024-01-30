@@ -3,6 +3,8 @@ import '../styles/object.scss'
 import { useParams } from "react-router-dom";
 import { createItem, createNew, createNewFiles, deleteItem, findItems, findObject, findSteps, getFiles, updateItem } from "../http/objectAPI";
 import { GoPlus, GoPencil, GoTrash, GoFile } from 'react-icons/go'
+import { CiSearch } from 'react-icons/ci'
+
 
 const Object = () => {
     const { id } = useParams()
@@ -25,6 +27,8 @@ const Object = () => {
     const [itemFiles, setItemFiles] = useState(null)
     const [itemId, setItemId] = useState(null)
     const [isWork, setIsWork] = useState(false)
+    const [searchedItems, setSearchedItems] = useState(null)
+    const [value, setValue] = useState('')
 
     const sortByNumber = (steps) => {
         return steps.slice().sort((a, b) => a.number - b.number);
@@ -340,6 +344,15 @@ const Object = () => {
         return workNonCash
     }
 
+    const handleSearch = (e) => {
+        setValue(e.target.value)
+        if (e.target.value.length > 0) {
+            setSearchedItems(items.filter(item => item.name.includes(e.target.value)))
+        } else {
+            setSearchedItems(null)
+        }
+    }
+
     useEffect(() => {
         findObject(id).then(data => {
             setObject(data)
@@ -371,152 +384,173 @@ const Object = () => {
                     <div className="ObjectSub">{object.name} ({object.floor} этаж)</div>
                     {steps && items ?
                         <div>
-                            {sortByNumber(steps).map((step) => {
-                                return (
-                                    <div key={step.step_id} className="StepCard">
-                                        <div className="StepSub">
-                                            {step.number === 1 ?
-                                                'Фундамент'
-                                                : step.number === 2 ?
-                                                    'Здание'
-                                                    : step.number === 3 ?
-                                                        'Благоустройство'
-                                                        : step.number === 4 ?
-                                                            'Коммуникации'
-                                                            : step.number === 5 &&
-                                                            'Отделка'
-                                            }
-                                        </div>
-                                        {isItemInArr(items, step.step_id) &&
-                                            <div className="StepTable">
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Наименование</th>
-                                                            <th>Сумма (нал)</th>
-                                                            <th>Сумма (безнал)</th>
-                                                            <th>Оплачено (нал)</th>
-                                                            <th>Оплачено (нал)</th>
-                                                            <th>Документы</th>
-                                                            <th>Редактировать</th>
-                                                            <th>Удалить</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {filteredItems(step.step_id).map((item, i) => {
-                                                            return (
-                                                                <tr key={i}>
-                                                                    <td>{item.name}</td>
-                                                                    <td>{formatNumber(item.total)} ₽</td>
-                                                                    <td>{formatNumber(item.total_non_cash)} ₽</td>
-                                                                    <td>{formatNumber(item.paid_cash)} ₽</td>
-                                                                    <td>{formatNumber(item.paid_non_cash)} ₽</td>
-                                                                    <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
-                                                                    <td
-                                                                        className="UpdateItem"
-                                                                        onClick={() => {
-                                                                            chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
-                                                                            setIsCreating(false)
-                                                                        }}
-                                                                    >
-                                                                        <GoPencil size={22} style={{ marginTop: 3 }} />
-                                                                    </td>
-                                                                    <td
-                                                                        className="DeleteItem"
-                                                                        onClick={() => {
-                                                                            chooseToDelete(item.item_id, item.name)
-                                                                        }}
-                                                                    >
-                                                                        <GoTrash size={22} style={{ marginTop: 3 }} />
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        })}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        }
-                                        <button
-                                            className="AddItem"
-                                            onClick={() => {
-                                                chooseStep(step.step_id, step.number)
-                                                setIsCreating(true)
-                                                setIsWork(false)
-                                            }}
-                                        >
-                                            <GoPlus size={30} />
-                                        </button>
-                                        <div className="StepTotal">Итог (наличные): <span>{formatNumber(step.total)} ₽</span></div>
-                                        <div className="StepTotal">Итог (безналичные): <span>{formatNumber(step.total_non_cash)} ₽</span></div>
-                                        <div className="StepTotal">Оплачено (наличные): <span>{formatNumber(step.paid_cash)} ₽</span></div>
-                                        <div className="StepTotal">Оплачено (безналичные): <span>{formatNumber(step.paid_non_cash)} ₽</span></div>
-                                    </div>
-                                )
-                            })}
-                            <div className="StepCard">
-                                <div className="StepSub">Работа</div>
-                                {hasWork(items) &&
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Наименование</th>
-                                                <th>Сумма (нал)</th>
-                                                <th>Сумма (безнал)</th>
-                                                <th>Оплачено (нал)</th>
-                                                <th>Оплачено (нал)</th>
-                                                <th>Документы</th>
-                                                <th>Редактировать</th>
-                                                <th>Удалить</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {getWork(items).map((item, i) => {
-                                                return (
-                                                    <tr key={i}>
-                                                        <td>{item.name}</td>
-                                                        <td>{formatNumber(item.total)} ₽</td>
-                                                        <td>{formatNumber(item.total_non_cash)} ₽</td>
-                                                        <td>{formatNumber(item.paid_cash)} ₽</td>
-                                                        <td>{formatNumber(item.paid_non_cash)} ₽</td>
-                                                        <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
-                                                        <td
-                                                            className="UpdateItem"
-                                                            onClick={() => {
-                                                                chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
-                                                                setIsCreating(false)
-                                                            }}
-                                                        >
-                                                            <GoPencil size={22} style={{ marginTop: 3 }} />
-                                                        </td>
-                                                        <td
-                                                            className="DeleteItem"
-                                                            onClick={() => {
-                                                                chooseToDelete(item.item_id, item.name)
-                                                            }}
-                                                        >
-                                                            <GoTrash size={22} style={{ marginTop: 3 }} />
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })}
-                                        </tbody>
-                                    </table>
-                                }
-                                <button
-                                    className="AddItem"
-                                    onClick={() => {
-                                        showItemModal()
-                                        setIsCreating(true)
-                                        setIsWork(true)
-                                    }}
-                                >
-                                    <GoPlus size={30} />
-                                </button>
-                                <div className="StepTotal">Итог (наличные): <span>{formatNumber(workTotal(items))} ₽</span></div>
-                                <div className="StepTotal">Итог (безналичные): <span>{formatNumber(workTotalNonCash(items))} ₽</span></div>
-                                <div className="StepTotal">Оплачено (наличные): <span>{formatNumber(workCash(items))} ₽</span></div>
-                                <div className="StepTotal">Оплачено (безналичные): <span>{formatNumber(workNonCash(items))} ₽</span></div>
+                            <div className="ItemsSearch">
+                                <CiSearch className="ObjectsIcon" size={23} />
+                                <input className="ObjectsInput" type="text" placeholder="Поиск" value={value} onChange={handleSearch} />
                             </div>
+                            {sortByNumber(steps).map((step) => {
+                                // (searchedItems ? isItemInArr(searchedItems, step.step_id) : {})
+                                // if (searchedItems) {
+                                //     if (isItemInArr(searchedItems, step.step_id)) {
+
+                                //     }
+                                // }
+
+                                if (searchedItems ? isItemInArr(searchedItems, step.step_id) : {}) {
+                                    return (
+                                        <div key={step.step_id} className="StepCard">
+                                            <div className="StepSub">
+                                                {step.number === 1 ?
+                                                    'Фундамент'
+                                                    : step.number === 2 ?
+                                                        'Здание'
+                                                        : step.number === 3 ?
+                                                            'Благоустройство'
+                                                            : step.number === 4 ?
+                                                                'Коммуникации'
+                                                                : step.number === 5 &&
+                                                                'Отделка'
+                                                }
+                                            </div>
+                                            {isItemInArr(items, step.step_id) &&
+                                                <div className="StepTable">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Наименование</th>
+                                                                <th>Сумма (нал)</th>
+                                                                <th>Сумма (безнал)</th>
+                                                                <th>Оплачено (нал)</th>
+                                                                <th>Оплачено (нал)</th>
+                                                                <th>Документы</th>
+                                                                <th>Редактировать</th>
+                                                                <th>Удалить</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {filteredItems(step.step_id).map((item, i) => {
+                                                                if (searchedItems ? searchedItems.some(searchedItem => searchedItem === item) : {}) {
+                                                                    return (
+                                                                        <tr key={i}>
+                                                                            <td>{item.name}</td>
+                                                                            <td>{formatNumber(item.total)} ₽</td>
+                                                                            <td>{formatNumber(item.total_non_cash)} ₽</td>
+                                                                            <td>{formatNumber(item.paid_cash)} ₽</td>
+                                                                            <td>{formatNumber(item.paid_non_cash)} ₽</td>
+                                                                            <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
+                                                                            <td
+                                                                                className="UpdateItem"
+                                                                                onClick={() => {
+                                                                                    chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
+                                                                                    setIsCreating(false)
+                                                                                }}
+                                                                            >
+                                                                                <GoPencil size={22} style={{ marginTop: 3 }} />
+                                                                            </td>
+                                                                            <td
+                                                                                className="DeleteItem"
+                                                                                onClick={() => {
+                                                                                    chooseToDelete(item.item_id, item.name)
+                                                                                }}
+                                                                            >
+                                                                                <GoTrash size={22} style={{ marginTop: 3 }} />
+                                                                            </td>
+                                                                        </tr>
+                                                                    )
+                                                                } else {
+                                                                    return null
+                                                                }
+                                                            })}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            }
+                                            <button
+                                                className="AddItem"
+                                                onClick={() => {
+                                                    chooseStep(step.step_id, step.number)
+                                                    setIsCreating(true)
+                                                    setIsWork(false)
+                                                }}
+                                            >
+                                                <GoPlus size={30} />
+                                            </button>
+                                            <div className="StepTotal">Итог (наличные): <span>{formatNumber(step.total)} ₽</span></div>
+                                            <div className="StepTotal">Итог (безналичные): <span>{formatNumber(step.total_non_cash)} ₽</span></div>
+                                            <div className="StepTotal">Оплачено (наличные): <span>{formatNumber(step.paid_cash)} ₽</span></div>
+                                            <div className="StepTotal">Оплачено (безналичные): <span>{formatNumber(step.paid_non_cash)} ₽</span></div>
+                                        </div>
+                                    )
+                                } else {
+                                    return null
+                                }
+                            })}
+                            {!searchedItems &&
+                                <div className="StepCard">
+                                    <div className="StepSub">Работа</div>
+                                    {hasWork(items) &&
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Наименование</th>
+                                                    <th>Сумма (нал)</th>
+                                                    <th>Сумма (безнал)</th>
+                                                    <th>Оплачено (нал)</th>
+                                                    <th>Оплачено (нал)</th>
+                                                    <th>Документы</th>
+                                                    <th>Редактировать</th>
+                                                    <th>Удалить</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {getWork(items).map((item, i) => {
+                                                    return (
+                                                        <tr key={i}>
+                                                            <td>{item.name}</td>
+                                                            <td>{formatNumber(item.total)} ₽</td>
+                                                            <td>{formatNumber(item.total_non_cash)} ₽</td>
+                                                            <td>{formatNumber(item.paid_cash)} ₽</td>
+                                                            <td>{formatNumber(item.paid_non_cash)} ₽</td>
+                                                            <td className="TableFiles" onClick={() => showFiles(item.item_id)}>Просмотр</td>
+                                                            <td
+                                                                className="UpdateItem"
+                                                                onClick={() => {
+                                                                    chooseItem(item.item_id, item.name, item.total, item.total_non_cash, item.paid_cash, item.paid_non_cash)
+                                                                    setIsCreating(false)
+                                                                }}
+                                                            >
+                                                                <GoPencil size={22} style={{ marginTop: 3 }} />
+                                                            </td>
+                                                            <td
+                                                                className="DeleteItem"
+                                                                onClick={() => {
+                                                                    chooseToDelete(item.item_id, item.name)
+                                                                }}
+                                                            >
+                                                                <GoTrash size={22} style={{ marginTop: 3 }} />
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    }
+                                    <button
+                                        className="AddItem"
+                                        onClick={() => {
+                                            showItemModal()
+                                            setIsCreating(true)
+                                            setIsWork(true)
+                                        }}
+                                    >
+                                        <GoPlus size={30} />
+                                    </button>
+                                    <div className="StepTotal">Итог (наличные): <span>{formatNumber(workTotal(items))} ₽</span></div>
+                                    <div className="StepTotal">Итог (безналичные): <span>{formatNumber(workTotalNonCash(items))} ₽</span></div>
+                                    <div className="StepTotal">Оплачено (наличные): <span>{formatNumber(workCash(items))} ₽</span></div>
+                                    <div className="StepTotal">Оплачено (безналичные): <span>{formatNumber(workNonCash(items))} ₽</span></div>
+                                </div>
+                            }
                         </div>
                         :
                         <div className="LoaderBox">
