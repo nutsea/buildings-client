@@ -120,3 +120,8 @@ export const deleteItem = async (item_id) => {
     const { data } = await $host.delete('api/item', { params: { item_id } })
     return data
 }
+
+export const searchObjects = async (search) => {
+    const { data } = await $host.get('api/item/bysearch', { params: { search } })
+    return data
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CiSearch } from 'react-icons/ci'
 import '../styles/main.scss'
-import { createItemAll, createItemMany, createObject, deleteObject, fetchObjects, fetchSummary } from "../http/objectAPI";
+import { createItemAll, createItemMany, createObject, deleteObject, fetchObjects, fetchSummary, searchObjects } from "../http/objectAPI";
 import { useNavigate } from "react-router-dom";
 
 const Main = () => {
@@ -9,6 +9,8 @@ const Main = () => {
     const [name, setName] = useState('')
     const [floor, setFloor] = useState('')
     const [objects, setObjects] = useState(null)
+    const [objectsSearch, setObjectsSearch] = useState(null)
+    const [objectsSearch2, setObjectsSearch2] = useState(null)
     const [summary, setSummary] = useState(null)
     const [object, setObject] = useState(null)
     const [itemName, setItemName] = useState('')
@@ -51,10 +53,16 @@ const Main = () => {
 
     const handleSearch = (e) => {
         setSearch(e.target.value)
+        searchObjects(e.target.value).then(data => {
+            setObjectsSearch(data)
+        })
     }
 
     const handleSearch2 = (e) => {
         setSearch2(e.target.value)
+        searchObjects(e.target.value).then(data => {
+            setObjectsSearch2(data)
+        })
     }
 
     const handleChangeName = (e) => {
@@ -138,21 +146,27 @@ const Main = () => {
     }
 
     const filteredObjects = () => {
-        if (objects)
-            return objects.filter((object) => object.name.includes(search) || object.total.toString().includes(search) || object.total_non_cash.toString().includes(search) || object.floor.toString().includes(search))
+        return objectsSearch
+        // if (objects)
+        //     return objects.filter((object) => object.name.includes(search) || object.total.toString().includes(search) || object.total_non_cash.toString().includes(search) || object.floor.toString().includes(search))
     }
 
     const filteredObjects2 = () => {
-        if (objects)
-            return objects.filter((object) => object.name.includes(search2))
+        return objectsSearch2
+        // if (objects)
+        //     return objects.filter((object) => object.name.includes(search2))
     }
 
     const addObject = () => {
         setObjects(null)
+        setObjectsSearch(null)
+        setObjectsSearch2(null)
         setSummary(null)
         createObject(name, floor).then(() => {
             fetchObjects().then((data) => {
                 setObjects(data)
+                setObjectsSearch(data)
+                setObjectsSearch2(data)
             })
             fetchSummary().then((data) => {
                 setSummary(data)
@@ -184,10 +198,14 @@ const Main = () => {
     const removeObject = () => {
         let tempObject = object
         setObjects(null)
+        setObjectsSearch(null)
+        setObjectsSearch2(null)
         setSummary(null)
         deleteObject(tempObject.object_id).then(() => {
             fetchObjects().then((data) => {
                 setObjects(data)
+                setObjectsSearch(data)
+                setObjectsSearch2(data)
             })
             fetchSummary().then((data) => {
                 setSummary(data)
@@ -195,12 +213,16 @@ const Main = () => {
         })
         document.querySelector('.DeleteObjectModal').classList.add('None')
         setObject(null)
+        setObjectsSearch(null)
+        setObjectsSearch2(null)
     }
 
     const addItem = () => {
         document.querySelector('.CreateItemModal').classList.add('None')
         if (isForAll) {
             setObjects(null)
+            setObjectsSearch(null)
+            setObjectsSearch2(null)
             setSummary(null)
             createItemAll(itemName, total, totalNonCash, cash, nonCash, stepNum, isWork).then(() => {
                 setItemName('')
@@ -218,6 +240,8 @@ const Main = () => {
                 }
                 fetchObjects().then((data) => {
                     setObjects(data)
+                    setObjectsSearch(data)
+                    setObjectsSearch2(data)
                 })
                 fetchSummary().then((data) => {
                     setSummary(data)
@@ -225,6 +249,8 @@ const Main = () => {
             })
         } else {
             setObjects(null)
+            setObjectsSearch(null)
+            setObjectsSearch2(null)
             setSummary(null)
             createItemMany(itemName, total, totalNonCash, cash, nonCash, stepNum, objectsList, isWork).then(() => {
                 setItemName('')
@@ -242,6 +268,8 @@ const Main = () => {
                 }
                 fetchObjects().then((data) => {
                     setObjects(data)
+                    setObjectsSearch(data)
+                    setObjectsSearch2(data)
                 })
                 fetchSummary().then((data) => {
                     setSummary(data)
@@ -253,6 +281,8 @@ const Main = () => {
     useEffect(() => {
         fetchObjects().then((data) => {
             setObjects(data)
+            setObjectsSearch(data)
+            setObjectsSearch2(data)
         })
         fetchSummary().then((data) => {
             setSummary(data)
@@ -293,8 +323,10 @@ const Main = () => {
                         </button>
                     </div>
                     <div className="MainSubCenter">
-                        <div>ТЕХНО</div>
-                        <div>ЛИТ</div>
+                        {/* <div>ТЕХНО</div>
+                        <div>ЛИТ</div> */}
+                        <div>НЬЮ</div>
+                        <div>ЛАЙН</div>
                     </div>
                     <div className="MainSummary">
                         <div className="SummarySub">ОБЩАЯ СВОДКА</div>
