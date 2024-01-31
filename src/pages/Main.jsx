@@ -276,7 +276,7 @@ const Main = () => {
 
     function sortByCreatedAt(array) {
         // Сортировка по полю createdAt в порядке убывания (от более новых к более старым)
-        return array.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        return array.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
     }
 
     useEffect(() => {
