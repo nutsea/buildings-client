@@ -369,7 +369,7 @@ const Main = () => {
                                                     <div className="ObjectName">{object.name}</div>
                                                     <div className="ObjectTotal">Общие (нал): <span>{formatNumber(object.total)} ₽</span></div>
                                                     <div className="ObjectTotal">Общие (безнал): <span>{formatNumber(object.total_non_cash)} ₽</span></div>
-                                                    <div className="ObjectTotal"><b>ИТОГ: {formatNumber(object.paid_cash + object.paid_non_cash)} ₽</b></div>
+                                                    <div className="ObjectTotal"><b>ИТОГ: </b><b>{formatNumber(object.paid_cash + object.paid_non_cash)} ₽</b></div>
                                                     <button className="ObjectView" onClick={() => handleNavigate(object.object_id)}>ПРОСМОТР</button>
                                                     <button className="ObjectDelete" onClick={() => setChooseObject(object)}>УДАЛИТЬ</button>
                                                 </div>

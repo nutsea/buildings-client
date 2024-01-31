@@ -529,16 +529,38 @@
         left: 47.5%;
     }
 }
-@media (max-width: 530px) {
-    .ObjectsContainer {
+
+@media (max-width: 800px) {
+    .ObjectTotal {
+        font-size: 14px;
+        display: flex;
         flex-direction: column;
     }
 
-    .ObjectItem {
-        width: calc(100% - 40px);
-    }
-
-    .ObjectsFigure {
-        display: none;
+    .ObjectView, .ObjectDelete {
+        font-size: 14px;
     }
 }
+
+@media (max-width: 500px) {
+    .ObjectItem {
+        padding: 15px;
+    }
+
+    .ObjectView, .ObjectDelete {
+        padding: 10px 0;
+    }
+}
+// @media (max-width: 530px) {
+//     .ObjectsContainer {
+//         flex-direction: column;
+//     }
+
+//     .ObjectItem {
+//         width: calc(100% - 40px);
+//     }
+
+//     .ObjectsFigure {
+//         display: none;
+//     }
+// }
