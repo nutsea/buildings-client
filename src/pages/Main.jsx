@@ -146,15 +146,11 @@ const Main = () => {
     }
 
     const filteredObjects = () => {
-        return objectsSearch
-        // if (objects)
-        //     return objects.filter((object) => object.name.includes(search) || object.total.toString().includes(search) || object.total_non_cash.toString().includes(search) || object.floor.toString().includes(search))
+        return sortByCreatedAt(objectsSearch)
     }
 
     const filteredObjects2 = () => {
-        return objectsSearch2
-        // if (objects)
-        //     return objects.filter((object) => object.name.includes(search2))
+        return sortByCreatedAt(objectsSearch2)
     }
 
     const addObject = () => {
@@ -276,6 +272,11 @@ const Main = () => {
                 })
             })
         }
+    }
+
+    function sortByCreatedAt(array) {
+        // Сортировка по полю createdAt в порядке убывания (от более новых к более старым)
+        return array.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     }
 
     useEffect(() => {
