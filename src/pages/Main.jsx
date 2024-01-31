@@ -133,7 +133,7 @@ const Main = () => {
 
     const formatNumber = (number) => {
         try {
-            let numberString = number.toString()
+            let numberString = number.toFixed(2).toString()
             let parts = numberString.split(".")
             let integerPart = parts[0]
             let decimalPart = parts.length > 1 ? "." + parts[1] : ""
